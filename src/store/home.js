@@ -6,6 +6,7 @@ import {reqCategoryList} from '@/api'
  }
  //直接修改数据的地，是多个方法的一个对象  方法当中不能出现if  for   异步操作
  const mutations = {
+    //  这里的函数大写是习惯，也可以小写
      RECEIVECATEGORYLIST(state, categoryList) {
          state.categoryList = categoryList
      }
@@ -23,7 +24,7 @@ import {reqCategoryList} from '@/api'
  const getters = {}
 
 
- //2、向外暴露一个Store对象
+ //2、向外暴露
  export default {
     state,
     mutations,
