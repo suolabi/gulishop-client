@@ -3,10 +3,7 @@ import VueRouter from 'vue-router'
 import Vue from 'vue'
 Vue.use(VueRouter) //声明使用
 
-import Home from '@/pages/Home'
-import Search from '@/pages/Search'
-import Login from '@/pages/Login'
-import Register from '@/pages/Register'
+import routes from './routes'
 
 //2必须往外暴露一个路由器对象
 
@@ -45,42 +42,10 @@ VueRouter.prototype.replace = function (location, onResolve, onRejected) {
 
 
 export default new VueRouter({
-  routes: [{
-      path: '/home',
-      component: Home
-    },
-    {
-      path: '/search/:keyword?',
-      component: Search,
-      name: 'search',
-      // props:true
-      // props:{name:'zhaoliying'},
-      props(route) {
-        return {
-          keyword: route.params.keyword,
-          keyword2: route.query.keyword2
-        }
-      }
-    },
-    {
-      path: '/login',
-      component: Login,
-      meta: {
-        isHide: true
-      }
-    },
-    {
-      path: '/register',
-      component: Register,
-      meta: {
-        isHide: true
-      }
-    },
-    {
-      path: '/',
-      redirect: '/home'
-    }
-  ]
+  routes,
+  scrollBehavior (to, from, savedPosition) {
+    return { x: 0, y: 0 }
+  }
 })
 
 //3、必须在vue当中去注入（使用）路由器对象 main.js当中去注入

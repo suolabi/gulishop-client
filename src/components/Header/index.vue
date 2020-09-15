@@ -11,7 +11,6 @@
             <router-link :to="{path:'/login'}">登录</router-link>
             <!-- <a href="###" class="register">免费注册</a> -->
             <router-link to="/register" class="register">免费注册</router-link>
-
           </p>
         </div>
         <div class="typeList">
@@ -34,13 +33,13 @@
         </router-link>
         <!-- <a class="logo" title="尚品汇" href="###" target="_blank">
           <img src="./images/logo.png" alt />
-        </a> -->
+        </a>-->
       </h1>
       <div class="searchArea">
         <form action="###" class="searchForm">
-          <input type="text" id="autocomplete" class="input-error input-xxlarge" v-model="keyword"/>
+          <input type="text" id="autocomplete" class="input-error input-xxlarge" v-model="keyword" />
           <!-- 编程式导航，自己写跳转方式 -->
-          <button class="sui-btn btn-xlarge btn-danger" type="button" @click= "toSearch" >搜索</button>
+          <button class="sui-btn btn-xlarge btn-danger" type="button" @click="toSearch">搜索</button>
         </form>
       </div>
     </div>
@@ -52,27 +51,45 @@ export default {
   name: "Header",
   data() {
     return {
-      keyword:''
-    }
+      keyword: "",
+    };
+  },
+  mounted() {
+    this.$bus.$on("clearKeyword", this.clearKeyWord);
   },
   methods: {
+    clearKeyWord() {
+      this.keyword = "";
+    },
     toSearch() {
       // this.$router.push("/search")
       // 对象写法
       // this.$router.push({path:"/search"})
       // params参数和path配合
       let location = {
-        name:'search',
-        params:{
-          keyword:this.keyword || undefined,
+        name: "search",
+        params: {
+          keyword: this.keyword || undefined,
         },
-        query:{
-          keyword2:this.keyword.toUpperCase()
-        }
+        // query:{
+        //   keyword2:this.keyword.toUpperCase()
+        // }
+      };
+      // 判断当前路径当中是不是有query参数，有就带上
+      let { query } = this.$route;
+      if (query) {
+        location.query = query;
       }
-      this.$router.push(location)
-    }
-  }
+
+      // 看是否是从首页home到search页
+      //判断当前路由路径是什么，如果是home，那么我们就push，如果不是home那就replace
+      if (this.$route.path !== "/home") {
+        this.$router.replace(location);
+      } else {
+        this.$router.push(location);
+      }
+    },
+  },
 };
 </script>
 
