@@ -46,13 +46,13 @@ export default {
         //updated也可以实现，但是并不是最近一次更新，而是页面所有的更新都会执行这个钩子（updated），在这里没必要这样写
         this.$nextTick(() => {
           new Swiper(this.$refs.imgSwiper, {
-            loop: true, // 循环模式选项
+            // loop: true, // 循环模式选项
             slidesPerView: 5, //每一屏显示的张数
             slidesPerGroup: 5, //每一组滑动的张数
             // // 如果需要分页器
-            // pagination: {
-            //   el: ".swiper-pagination",
-            // },
+            pagination: {
+              el: ".swiper-pagination",
+            },
             // 如果需要前进后退按钮
             navigation: {
               nextEl: ".swiper-button-next",

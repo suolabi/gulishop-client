@@ -352,10 +352,10 @@ export default {
       // 让当前的背景色为1
       spuSaleAttrValue.isChecked = "1";
     },
-    addShopCart() {
+    async addShopCart() {
       // 1.发请求
       try {
-      this.$store.dispatch('addOrUpdateShopCart', {skuId:this.skuInfo.id,skuNum:this.skuInfo.skuNum})
+      this.$store.dispatch('addOrUpdateShopCart', {skuId:this.skuInfo.id,skuNum:this.skuNum})
       alert('添加购物车成功，确认自动跳转至添加购物车成功页面')
 
       // 这里习惯大写，可以小写,

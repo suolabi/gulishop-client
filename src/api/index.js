@@ -90,3 +90,22 @@ export const reqAddOrUpdateShopCart = (skuId,skuNum) => {
 }
 
 
+// 请求获取购物车列表数据
+// /api/cart/cartList
+// get 
+// 参数无
+export const reqShopCartList = () => {
+  return Ajax({
+    url:"/cart/cartList",
+    method:"get"
+  })
+}
+
+
+//请求修改购物车的选中状态  /api/cart/checkCart/{skuId}/{isChecked}   GET
+export const reqUpdateCartIsChecked = (skuId,isChecked) => {
+  return Ajax({
+    url:`/cart/checkCart/${skuId}/${isChecked}`,
+    method:'get'
+  })
+}
