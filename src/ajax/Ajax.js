@@ -27,6 +27,13 @@ instance.interceptors.request.use((config) => {
         //请求拦截器当中为每一次ajax请求都添加用户临时标识
         config.headers.userTempId = userTempId
     }
+    // 获取token值
+    let token = store.state.user.userInfo.token
+    // 如果token存在
+    if(token) {
+        //请求拦截器当中为每一次ajax请求都添加token
+       config.headers.token = token 
+    }
     return config;
 
 });

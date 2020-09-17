@@ -18,10 +18,13 @@ Vue.component('Pagination', Pagination)
 // import {reqCategoryList} from '@/api'
 // reqCategoryList()
 
+//所有组件都能用API
+import * as API from '@/api'
 
 new Vue({
   beforeCreate() {
     Vue.prototype.$bus = this//vm  
+    Vue.prototype.$API = API//vm  //所有组件都能用API
     //在Vue的原型上添加了一个属性  $bus   $bus指向了一个对象 这个对象就是我们vm对象
     //1、为什么要在Vue原型上添加   
     //（让所有的组件对象都能看到它，找到它）

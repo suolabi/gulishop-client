@@ -5,9 +5,24 @@ import Register from '@/pages/Register'
 import Detail from '@/pages/Detail'
 import AddCartSuccess from '@/pages/AddCartSuccess'
 import ShopCart from '@/pages/ShopCart'
+import Pay from '@/pages/Pay'
+import PaySuccess from '@/pages/PaySuccess'
+import Trade from '@/pages/Trade'
 
 
 export default [
+    {
+        path: '/pay',
+        component: Pay
+    },
+    {
+        path: '/paysuccess',
+        component: PaySuccess
+    },
+    {
+        path: '/trade',
+        component: Trade
+    },
     {
         path: '/shopcart',
         component: ShopCart

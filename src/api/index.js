@@ -1,5 +1,7 @@
 import Ajax from '@/ajax/Ajax'
 import mockAjax from '@/ajax/mockAjax'
+
+
 //用来书写所有的接口请求函数
 //15个接口，每一个接口我们都去封装一个函数来对应
 //以后哪里需要数据，那我就调哪一个相应的接口请求函数就ok
@@ -107,5 +109,75 @@ export const reqUpdateCartIsChecked = (skuId,isChecked) => {
   return Ajax({
     url:`/cart/checkCart/${skuId}/${isChecked}`,
     method:'get'
+  })
+}
+
+// 请求删除购物车  
+// /api/cart/deleteCart/{skuId}
+// DELETE
+export const reqDeleteCart = (skuId) => {
+  return Ajax({
+    url:`/cart/deleteCart/${skuId}`,
+    method:'DELETE'
+  })
+}
+
+// /api/user/passport/register
+// post
+// 参数：mobile，password，code
+export const reqUserRegister = (userInfo) =>{
+  return Ajax({
+    url:`/user/passport/register`,
+    method:'post',
+    data:userInfo
+  })
+}
+
+
+// 登录页面请求
+// /api/user/passport/login
+// post 
+// 参数 mobile，password  请求体参数
+export const reqUserLogin = (userInfo) =>{
+  return Ajax({
+    url:'/user/passport/login',
+    method:'post',
+    data:userInfo
+  })
+}
+
+
+// 请求退出登录
+// /api/user/passport/logout
+// get
+// 参数 无
+export const reqUserLogout = () => {
+  return Ajax({
+    url:'/user/passport/logout',
+    method:'get'
+  })
+}
+
+
+// 请求获取订单交易信息
+// /api/order/auth/trade
+// get
+// 参数  无
+export const reqTradeInfo = ()=>{
+  return Ajax({
+    url:'/order/auth/trade',
+    method:"get"
+  })
+}
+
+//请求提交订单（创建订单）
+// /api/order/auth/submitOrder?tradeNo={tradeNo}
+// post
+
+export const reqSubmitOrder = (tradeNo,tradeInfo)=>{
+  return Ajax({
+    url:`/order/auth/submitOrder?tradeNo=${tradeNo}`,
+    method:'post',
+    data:tradeInfo
   })
 }

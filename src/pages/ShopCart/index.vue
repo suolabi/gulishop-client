@@ -14,7 +14,12 @@
         <ul class="cart-list" v-for="(cart,index) in shopCartList" :key="cart.id">
           <li class="cart-list-con1">
             <!-- 复选框,isChecked  1为选中，0为不选中 -->
-            <input type="checkbox" name="chk_list" :checked="cart.isChecked" @click="changeIsChecked(cart)" />
+            <input
+              type="checkbox"
+              name="chk_list"
+              :checked="cart.isChecked"
+              @click="changeIsChecked(cart)"
+            />
           </li>
           <li class="cart-list-con2">
             <img :src="cart.imgUrl" />
@@ -43,7 +48,7 @@
             <span class="sum">{{cart.skuPrice * cart.skuNum}}</span>
           </li>
           <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
+            <a href="javascript:;" class="sindelet" @click="deleteCart(cart)">删除</a>
             <br />
             <a href="#none">移到收藏</a>
           </li>
@@ -56,7 +61,7 @@
         <span>全选</span>
       </div>
       <div class="option">
-        <a href="#none">删除选中的商品</a>
+        <a href="javascript:;" @click="deleteAllCart">删除选中的商品</a>
         <a href="#none">移到我的关注</a>
         <a href="#none">清除下柜商品</a>
       </div>
@@ -70,7 +75,8 @@
           <i class="summoney">{{allMoney}}</i>
         </div>
         <div class="sumbtn">
-          <a class="sum-btn" href="###" target="_blank">结算</a>
+          <!-- <a class="sum-btn" href="###" target="_blank">结算</a> -->
+          <router-link to="/trade">结算</router-link>
         </div>
       </div>
     </div>
@@ -113,20 +119,46 @@ export default {
       }
     },
 
-
     //修改单个购物车选中状态
-    async changeIsChecked(cart){
+    async changeIsChecked(cart) {
       try {
-        // cart.isChecked 隐式转换
-        await this.$store.dispatch('updateCartIsChecked',{skuId:cart.skuId,isChecked:cart.isChecked? 0:1})
+        // cart.isChecked 隐式转换,判断每一项是否被选中，0未选中，1选中
+        await this.$store.dispatch("updateCartIsChecked", {
+          skuId: cart.skuId,
+          isChecked: cart.isChecked ? 0 : 1,
+        });
         // 修改成功，重新获取数据
-        this.getShopCartList()
+        this.getShopCartList();
       } catch (error) {
-        alert('修改购物车商品选中状态失败'+error.message)
+        alert("修改购物车商品选中状态失败" + error.message);
+      }
+    },
+
+    // 删除单个商品
+    async deleteCart(cart) {
+      try {
+        this.$store.dispatch("deleteCart", cart.skuId);
+        alert("删除购物车成功");
+        this.getShopCartList();
+      } catch (error) {
+        alert('删除购物车失败'+ error.message)
       }
     },
 
 
+    // 删除多个选中商品
+    async deleteAllCart() {
+       //this.$store.dispatch('deleteAllCart') 就是在调用actions当中的deleteAllCart
+      //而this.$store.dispatch('deleteAllCart')是函数调用表达式，它的值就是actions当中的deleteAllCart的返回值
+      //actions当中的deleteAllCart的返回值就是Promise.all返回的那个promise
+      try {
+        const result = await this.$store.dispatch('deleteAllCart')
+        alert('删除选中的购物车成功')
+        this.getShopCartList();
+      } catch (error) {
+        alert('删除选中的购物车失败'+error.message)
+      }
+    }
   },
 
   // 把vuex的数据捞出来
@@ -171,15 +203,23 @@ export default {
       },
       // 点击全选需要修改数据，用到set
       // val是布尔值
-        // 在这里我们没有后端的接口可以一下把所有的都修改了，所以我们需要一个一个修改，用到了Promise.all
+      // 在这里我们没有后端的接口可以一下把所有的都修改了，所以我们需要一个一个修改，用到了Promise.all
       async set(val) {
         //这个值就是 Promise.all返回的那个promise
+        //Promise.all 传递的参数必须是一个promise对象的数组，返回值也是一个promise
+        //返回的promise对象的成功和失败  看数组内部所有的promise对象是否成功，如果都成功，那么它就成功，如果有一个失败，那它就失败
+        //成功的返回值promise的数据是一个数组 【每个成功的promise的数据】
+        // 失败的返回值，就是第一个失败的promise失败的原因
         try {
-          const result = await this.$store.dispatch('updateAllCartIsChecked',val?1:0)
+          const result = await this.$store.dispatch(
+            "updateAllCartIsChecked",
+            val ? 1 : 0
+          );
           // console.log(result)
-          this.getShopCartList()
+          this.getShopCartList();
         } catch (error) {
-          alert('修改购物车商品选中状态失败'+error.message)
+          // 这个error.message是第一个错误的原因
+          alert("修改购物车商品选中状态失败" + error.message);
         }
       },
     },
